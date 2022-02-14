@@ -12,7 +12,7 @@ pygame.display.set_caption('Motor Task')
 pygame.init()
 
 
-
+ 
 
 def main():
     run = True

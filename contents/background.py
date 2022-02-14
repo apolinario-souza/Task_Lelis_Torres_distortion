@@ -54,7 +54,65 @@ class Target_random:
         return self.response
             
 
-                
+class Distortion:
+    def rotate (self,x,y, seq):
+        
+         
+        if seq == 1 or seq ==2 or seq ==3:
+            tan = math.atan2(x, y)
+            angle = math.degrees(tan)                
+            angle  = abs(angle-45)                
+            hip = math.hypot(x,y)  
+            x_dist = math.sin(math.radians(angle))*hip 
+            y_dist = math.cos(math.radians(angle))*hip       
+            
+            ### correction 
+            tan_center = math.atan2(WIDTH//2, HEIGHT//2)
+            angle_center = math.degrees(tan_center)
+            angle_center = abs(angle_center-45)                    
+            hip_center = math.hypot(WIDTH//2,HEIGHT//2)
+            
+            x_center = math.sin(math.radians(angle_center))*hip_center 
+            y_center = math.cos(math.radians(angle_center))*hip_center            
+            
+            cor_x = ((WIDTH//2 - x_center)*100)/WIDTH
+            cor_y = ((HEIGHT//2 - y_center)*100)/HEIGHT
+            
+            x_dist = x_dist + int((WIDTH*(cor_x/100)))
+            y_dist = y_dist + int((HEIGHT*(cor_y/100)))
+           
+        
+       
+        if seq == 4 or seq == 5 or seq == 6:
+            tan = math.atan2(x, y)
+            angle = math.degrees(tan)                
+            angle  = abs(angle+45)                
+            hip = math.hypot(x,y)  
+            x_dist = math.sin(math.radians(angle))*hip 
+            y_dist = math.cos(math.radians(angle))*hip
+            
+            
+            ### correction 
+            tan_center = math.atan2(WIDTH//2, HEIGHT//2)
+            angle_center = math.degrees(tan_center)
+            angle_center = abs(angle_center+45)                    
+            hip_center = math.hypot(WIDTH//2,HEIGHT//2)
+            
+            x_center = math.sin(math.radians(angle_center))*hip_center 
+            y_center = math.cos(math.radians(angle_center))*hip_center 
+            
+            
+            
+            cor_x = ((WIDTH//2 - x_center)*100)/WIDTH
+            cor_y = ((HEIGHT//2 - y_center)*100)/HEIGHT
+            
+            x_dist = x_dist + int((WIDTH*(cor_x/100)))
+            y_dist = y_dist + int((HEIGHT*(cor_y/100)))
+            
+       
+       
+        
+        return x_dist, y_dist                     
       
    
  
@@ -72,6 +130,8 @@ class Background:
         self.cont = 0
         self.cont2 = False
         self.mouse_position = []
+        self.mouse_position_dist = []
+        self.mouse_angle = []
         self.check = False
         self.execution_time = []
         self.sequence = Target_random().target_control(N_TRIALS)   
@@ -92,10 +152,10 @@ class Background:
         image = pygame.transform.scale(image, (diameter, diameter)) 
         win.blit(image, (pos_x-diameter//2, pos_y-diameter//2)) 
     
-    def draw_mouse(self, win, mouse_position):
+    def draw_mouse(self, win, color, mouse_position):
         mouse_position = mouse_position        
         for pos in mouse_position:                                  
-            pygame.draw.circle(win, RED, (pos[0],pos[1]), DIAMETER_T//4, 0)
+            pygame.draw.circle(win, color, (pos[0],pos[1]), DIAMETER_T//4, 0)
         
     def text_write (self, win, text, width, height):
         base_font = pygame.font.Font(None, 32)
@@ -137,8 +197,8 @@ class Background:
             # Screen 1: Holding 
             if self.cont >= 0 and self.cont < HOLDING:
                 win.fill(BLACK)
-                x = WIDTH//2+(DIAMETER_H//2)
-                y = HEIGHT//2-(DIAMETER_H//2)
+                x = WIDTH//2
+                y = HEIGHT//2
                 self.draw_circle_t(win, x,y, DIAMETER_H, 0, WHITE)            
                
                
@@ -148,12 +208,14 @@ class Background:
                 win.fill(BLACK)
                 
                 n_of_points = (abs(HOLDING-WARNING)/1000)*(200-5)
-                x = WIDTH//2+(DIAMETER_T//2)
-                y = HEIGHT//2-(DIAMETER_T//2)
+		
+                x = WIDTH//2
+                y = HEIGHT//2
+		
                 
                 if self.sequence[self.trial] == 1:
-                    self.pos_target_x = int(x*TARGET_x_1) 
-                    self.pos_target_y = int(y*TARGET_y_1)    
+                    self.pos_target_x = int(35*TARGET_x_1) 
+                    self.pos_target_y = int(35*TARGET_y_1)    
                     self.increase +=1
                     set_x = self.pos_target_x+(x-self.pos_target_x)
                     set_y = self.pos_target_y+(y-self.pos_target_y)                 
@@ -164,20 +226,20 @@ class Background:
                     self.draw_circle_t(win, set_x+(rate_increas_x*self.increase), set_y-(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
                                     
                 if self.sequence[self.trial] == 2:
-                    self.pos_target_x = int(x*TARGET_x_2) 
-                    self.pos_target_y = int(y*TARGET_y_2)  
+                    self.pos_target_x = int(35*TARGET_x_2) 
+                    self.pos_target_y = int(35*TARGET_y_2)  
                     self.increase +=1
                     set_x = self.pos_target_x+(x-self.pos_target_x)
                     set_y = self.pos_target_y+(y-self.pos_target_y)                  
                     rate_increas_x = abs(set_x-self.pos_target_x)/n_of_points
                     rate_increas_y = abs(set_y-self.pos_target_y)/n_of_points       
                     
-                    self.draw_circle_t(win, set_x-(rate_increas_x*self.increase), set_y-(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
+                    self.draw_circle_t(win, set_x+(rate_increas_x*self.increase), set_y-(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
                    
                 
                 if self.sequence[self.trial] == 3:
-                    self.pos_target_x = int(x*TARGET_x_3) 
-                    self.pos_target_y = int(y*TARGET_y_3)   
+                    self.pos_target_x = int(35*TARGET_x_3) 
+                    self.pos_target_y = int(35*TARGET_y_3)   
                     self.increase +=1
                     set_x = self.pos_target_x+(x-self.pos_target_x)
                     set_y = self.pos_target_y+(y-self.pos_target_y)
@@ -185,12 +247,12 @@ class Background:
                     rate_increas_x = abs(set_x-self.pos_target_x)/n_of_points
                     rate_increas_y = abs(set_y-self.pos_target_y)/n_of_points       
                     
-                    self.draw_circle_t(win, set_x-(rate_increas_x*self.increase), set_y-(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
+                    self.draw_circle_t(win, set_x+(rate_increas_x*self.increase), set_y+(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
                     
                 
                 if self.sequence[self.trial] == 4:
-                    self.pos_target_x = int(x*TARGET_x_4)  
-                    self.pos_target_y = int(y*TARGET_y_4)    
+                    self.pos_target_x = int(35*TARGET_x_4)  
+                    self.pos_target_y = int(35*TARGET_y_4)    
                     self.increase +=1
                     set_x = self.pos_target_x+(x-self.pos_target_x)
                     set_y = self.pos_target_y+(y-self.pos_target_y)        
@@ -199,12 +261,12 @@ class Background:
                     rate_increas_x = abs(set_x-self.pos_target_x)/n_of_points
                     rate_increas_y = abs(set_y-self.pos_target_y)/n_of_points       
                     
-                    self.draw_circle_t(win, set_x+(rate_increas_x*self.increase), set_y+(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
+                    self.draw_circle_t(win, set_x-(rate_increas_x*self.increase), set_y+(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
                     
                     
                 if self.sequence[self.trial] == 5:
-                    self.pos_target_x = int(x*TARGET_x_5)  
-                    self.pos_target_y = int(y*TARGET_y_5)    
+                    self.pos_target_x = int(35*TARGET_x_5)  
+                    self.pos_target_y = int(35*TARGET_y_5)    
                     self.increase +=1
                     set_x = self.pos_target_x+(x-self.pos_target_x)
                     set_y = self.pos_target_y+(y-self.pos_target_y)     
@@ -212,12 +274,12 @@ class Background:
                     rate_increas_x = abs(set_x-self.pos_target_x)/n_of_points
                     rate_increas_y = abs(set_y-self.pos_target_y)/n_of_points       
                     
-                    self.draw_circle_t(win, set_x+(rate_increas_x*self.increase), set_y+(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
+                    self.draw_circle_t(win, set_x-(rate_increas_x*self.increase), set_y+(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
                     
                     
                 if self.sequence[self.trial] == 6:
-                    self.pos_target_x = int(x*TARGET_x_6)  
-                    self.pos_target_y = int(y*TARGET_y_6)   
+                    self.pos_target_x = int(35*TARGET_x_6)  
+                    self.pos_target_y = int(35*TARGET_y_6)   
                     self.increase +=1
                     set_x = self.pos_target_x+(x-self.pos_target_x)
                     set_y = self.pos_target_y+(y-self.pos_target_y)
@@ -227,14 +289,14 @@ class Background:
                     rate_increas_x = abs(set_x-self.pos_target_x)/n_of_points
                     rate_increas_y = abs(set_y-self.pos_target_y)/n_of_points       
                     
-                    self.draw_circle_t(win, set_x-(rate_increas_x*self.increase), set_y+(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
+                    self.draw_circle_t(win, set_x-(rate_increas_x*self.increase), set_y-(rate_increas_y*self.increase), DIAMETER_T, 0, BLACK_2)
                                       
                             
                 
                 
                 #Circle of home position
-                x = WIDTH//2+(DIAMETER_H//2)
-                y = HEIGHT//2-(DIAMETER_H//2)
+                x = WIDTH//2
+                y = HEIGHT//2
                 self.draw_circle_t(win, x, y, DIAMETER_H, 0, WHITE)
                 #print(self.increase)
                 
@@ -262,14 +324,14 @@ class Background:
                 win.fill(BLACK)
                 
                 #Circle of home position
-                x = WIDTH//2+(DIAMETER_H//2)
-                y = HEIGHT//2-(DIAMETER_H//2)
+                x = WIDTH//2
+                y = HEIGHT//2
                 
                 
                 self.start = True
                 self.mouse_position = [] #Set mouse position
-                x = WIDTH//2+(DIAMETER_H//2)
-                y = HEIGHT//2-(DIAMETER_H//2)
+                x = WIDTH//2#+(DIAMETER_H//2)
+                y = HEIGHT//2#-(DIAMETER_H//2)
                 pygame.mouse.set_pos([x, y]) #Set to center
                 
                 
@@ -278,28 +340,39 @@ class Background:
                 #print('Start')
                                 
                 #Circle of home position
-                x = WIDTH//2+(DIAMETER_H//2)
-                y = HEIGHT//2-(DIAMETER_H//2)
+                x = WIDTH//2
+                y = HEIGHT//2
                 self.draw_circle_t(win, x, y, DIAMETER_H, 0, GREEN)
                 
                 #Circles of target
-                self.draw_circle_t(win, x*TARGET_x_1, y*TARGET_y_1, DIAMETER_T, 0, WHITE) #1
-                self.draw_circle_t(win, x*TARGET_x_2, y*TARGET_y_2, DIAMETER_T, 0, WHITE) #2
-                self.draw_circle_t(win,  x*TARGET_x_3, y*TARGET_y_3, DIAMETER_T, 0, WHITE) #3
-                self.draw_circle_t(win,  x*TARGET_x_4, y*TARGET_y_4, DIAMETER_T, 0, WHITE) #4
-                self.draw_circle_t(win,  x*TARGET_x_5, y*TARGET_y_5, DIAMETER_T, 0, WHITE) #5
-                self.draw_circle_t(win, x*TARGET_x_6, y*TARGET_y_6, DIAMETER_T, 0, WHITE) #6
+                self.draw_circle_t(win, 35*TARGET_x_1, 35*TARGET_y_1, DIAMETER_T, 0, WHITE) #1
+                self.draw_circle_t(win, 35*TARGET_x_2, 35*TARGET_y_2, DIAMETER_T, 0, WHITE) #2
+                self.draw_circle_t(win,  35*TARGET_x_3, 35*TARGET_y_3, DIAMETER_T, 0, WHITE) #3
+                self.draw_circle_t(win,  35*TARGET_x_4, 35*TARGET_y_4, DIAMETER_T, 0, WHITE) #4
+                self.draw_circle_t(win,  35*TARGET_x_5, 35*TARGET_y_5, DIAMETER_T, 0, WHITE) #5
+                self.draw_circle_t(win, 35*TARGET_x_6, 35*TARGET_y_6, DIAMETER_T, 0, WHITE) #6
                 
                 #Get time of response 
                 self.execution_time.append(pygame.time.get_ticks())  
                 
                 
-                #Get mouse position and draw                
-                self.mouse_position.append(pygame.mouse.get_pos())
-                self.draw_mouse(win, self.mouse_position)
+                #Get mouse position and draw
+                x,y = pygame.mouse.get_pos()
+                self.mouse_position.append([x,y])
+
+                x_dist, y_dist = Distortion().rotate(x, y, self.sequence[self.trial])
+                tan = math.atan2(x, y)
+                angle = math.degrees(tan)
+                
+                self.mouse_position_dist.append([x_dist,y_dist]) 
+                print(self.mouse_position_dist[-1],self.mouse_position[-1],self.sequence[self.trial] )                  
+                
+                #self.mouse_position.append(pygame.mouse.get_pos())
+                self.draw_mouse(win, RED, self.mouse_position_dist)
+                self.draw_mouse(win, WHITE, self.mouse_position)
                       
                 
-            if self.cont > WARNING+EXECUTION+self.random and self.cont < WARNING+EXECUTION+self.random+10000:
+            if self.cont > WARNING+EXECUTION+self.random and self.cont < WARNING+EXECUTION+self.random+TIME_IMG:
                 win.fill(BLACK)
                 self.img (win,  WIDTH//2*.60, HEIGHT//2- DIAMETER_H*2, DIAMETER_H*2, "img/trial_"+str(self.trial+1)+"/1show.png")
                 self.img (win,  WIDTH//2*.80, HEIGHT//2- DIAMETER_H*2, DIAMETER_H*2, "img/trial_"+str(self.trial+1)+"/2show.png")
@@ -317,7 +390,7 @@ class Background:
                 
                 
             # Set all ans Save
-            if self.cont > WARNING+EXECUTION+self.random+10000:
+            if self.cont > WARNING+EXECUTION+self.random+TIME_IMG:
                 
                 self.trial +=1
                 
@@ -334,6 +407,7 @@ class Background:
                 #Set data
                 self.current_time = []
                 self.mouse_position = []
+                self.mouse_position_dist = []
                 self.execution_time = [] 
                 self.increase = 0
                
