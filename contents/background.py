@@ -369,7 +369,7 @@ class Background:
                 
                 #self.mouse_position.append(pygame.mouse.get_pos())
                 self.draw_mouse(win, RED, self.mouse_position_dist)
-                self.draw_mouse(win, WHITE, self.mouse_position)
+                #self.draw_mouse(win, WHITE, self.mouse_position)
                       
                 
             if self.cont > WARNING+EXECUTION+self.random and self.cont < WARNING+EXECUTION+self.random+TIME_IMG:
@@ -397,12 +397,12 @@ class Background:
                 #Save data
                 target_x = []
                 target_y = []
-                names = ['Time', 'Mouse_x', 'Mouse_y', 'Target_x', 'Target_y']
+                names = ['Time', 'Mouse_x', 'Mouse_y','Mouse_x_dist', 'Mouse_y_dist','Target_x', 'Target_y']
                 
                 for i in range (len(self.execution_time)):
                     target_x.append(self.pos_target_x)
                     target_y.append(self.pos_target_y)
-                np.savetxt('trials/trial_'+ str(self.trial)+'.csv', np.column_stack([self.execution_time,self.mouse_position,target_x, target_y] ), header = ','.join(names), delimiter=',')
+                np.savetxt('trials/trial_'+ str(self.trial)+'.csv', np.column_stack([self.execution_time,self.mouse_position_dist, self.mouse_position_dist,target_x, target_y] ), header = ','.join(names), delimiter=',')
                 
                 #Set data
                 self.current_time = []
