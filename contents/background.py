@@ -1,5 +1,5 @@
 import pygame
-from .constants import BLACK, BLACK_2, RED, WHITE, WIDTH, HEIGHT, DIAMETER_H, GREEN, DIAMETER_T, HOLDING, WARNING, EXECUTION, RANDOM_INTERVAL,TIME_IMG, N_TRIALS, TARGET_x_1, TARGET_y_1,TARGET_x_2, TARGET_y_2, TARGET_x_3, TARGET_y_3, TARGET_x_4, TARGET_y_4, TARGET_x_5, TARGET_y_5, TARGET_x_6, TARGET_y_6   
+from .constants import BLACK, BLACK_2, RED, WHITE, WIDTH, HEIGHT, DIAMETER_H, GREEN, DIAMETER_T, HOLDING, WARNING, EXECUTION, RANDOM_INTERVAL,TIME_FEEDBACK, TIME_IMG, N_TRIALS, TARGET_x_1, TARGET_y_1,TARGET_x_2, TARGET_y_2, TARGET_x_3, TARGET_y_3, TARGET_x_4, TARGET_y_4, TARGET_x_5, TARGET_y_5, TARGET_x_6, TARGET_y_6   
 import random
 
 import numpy as np
@@ -345,12 +345,51 @@ class Background:
                 self.draw_circle_t(win, x, y, DIAMETER_H, 0, GREEN)
                 
                 #Circles of target
-                self.draw_circle_t(win, 35*TARGET_x_1, 35*TARGET_y_1, DIAMETER_T, 0, WHITE) #1
-                self.draw_circle_t(win, 35*TARGET_x_2, 35*TARGET_y_2, DIAMETER_T, 0, WHITE) #2
-                self.draw_circle_t(win,  35*TARGET_x_3, 35*TARGET_y_3, DIAMETER_T, 0, WHITE) #3
-                self.draw_circle_t(win,  35*TARGET_x_4, 35*TARGET_y_4, DIAMETER_T, 0, WHITE) #4
-                self.draw_circle_t(win,  35*TARGET_x_5, 35*TARGET_y_5, DIAMETER_T, 0, WHITE) #5
-                self.draw_circle_t(win, 35*TARGET_x_6, 35*TARGET_y_6, DIAMETER_T, 0, WHITE) #6
+                if self.sequence[self.trial] == 1:
+                    self.draw_circle_t(win, 35*TARGET_x_1, 35*TARGET_y_1, DIAMETER_T, 0, WHITE) #1
+                    self.draw_circle_t(win, 35*TARGET_x_2, 35*TARGET_y_2, DIAMETER_T, 0, BLACK_2) #2
+                    self.draw_circle_t(win,  35*TARGET_x_3, 35*TARGET_y_3, DIAMETER_T, 0, BLACK_2) #3
+                    self.draw_circle_t(win,  35*TARGET_x_4, 35*TARGET_y_4, DIAMETER_T, 0, BLACK_2) #4
+                    self.draw_circle_t(win,  35*TARGET_x_5, 35*TARGET_y_5, DIAMETER_T, 0, BLACK_2) #5
+                    self.draw_circle_t(win, 35*TARGET_x_6, 35*TARGET_y_6, DIAMETER_T, 0, BLACK_2) #6
+                
+                if self.sequence[self.trial] == 2:
+                    self.draw_circle_t(win, 35*TARGET_x_1, 35*TARGET_y_1, DIAMETER_T, 0, BLACK_2) #1
+                    self.draw_circle_t(win, 35*TARGET_x_2, 35*TARGET_y_2, DIAMETER_T, 0, WHITE) #2
+                    self.draw_circle_t(win,  35*TARGET_x_3, 35*TARGET_y_3, DIAMETER_T, 0, BLACK_2) #3
+                    self.draw_circle_t(win,  35*TARGET_x_4, 35*TARGET_y_4, DIAMETER_T, 0, BLACK_2) #4
+                    self.draw_circle_t(win,  35*TARGET_x_5, 35*TARGET_y_5, DIAMETER_T, 0, BLACK_2) #5
+                    self.draw_circle_t(win, 35*TARGET_x_6, 35*TARGET_y_6, DIAMETER_T, 0, BLACK_2) #6
+                if self.sequence[self.trial] == 3:
+                    self.draw_circle_t(win, 35*TARGET_x_1, 35*TARGET_y_1, DIAMETER_T, 0, BLACK_2) #1
+                    self.draw_circle_t(win, 35*TARGET_x_2, 35*TARGET_y_2, DIAMETER_T, 0, BLACK_2) #2
+                    self.draw_circle_t(win,  35*TARGET_x_3, 35*TARGET_y_3, DIAMETER_T, 0, WHITE) #3
+                    self.draw_circle_t(win,  35*TARGET_x_4, 35*TARGET_y_4, DIAMETER_T, 0, BLACK_2) #4
+                    self.draw_circle_t(win,  35*TARGET_x_5, 35*TARGET_y_5, DIAMETER_T, 0, BLACK_2) #5
+                    self.draw_circle_t(win, 35*TARGET_x_6, 35*TARGET_y_6, DIAMETER_T, 0, BLACK_2) #6
+                if self.sequence[self.trial] == 4:
+                    self.draw_circle_t(win, 35*TARGET_x_1, 35*TARGET_y_1, DIAMETER_T, 0, BLACK_2) #1
+                    self.draw_circle_t(win, 35*TARGET_x_2, 35*TARGET_y_2, DIAMETER_T, 0, BLACK_2) #2
+                    self.draw_circle_t(win,  35*TARGET_x_3, 35*TARGET_y_3, DIAMETER_T, 0, BLACK_2) #3
+                    self.draw_circle_t(win,  35*TARGET_x_4, 35*TARGET_y_4, DIAMETER_T, 0, WHITE) #4
+                    self.draw_circle_t(win,  35*TARGET_x_5, 35*TARGET_y_5, DIAMETER_T, 0, BLACK_2) #5
+                    self.draw_circle_t(win, 35*TARGET_x_6, 35*TARGET_y_6, DIAMETER_T, 0, BLACK_2) #6
+                
+                if self.sequence[self.trial] == 5:
+                    self.draw_circle_t(win, 35*TARGET_x_1, 35*TARGET_y_1, DIAMETER_T, 0, BLACK_2) #1
+                    self.draw_circle_t(win, 35*TARGET_x_2, 35*TARGET_y_2, DIAMETER_T, 0, BLACK_2) #2
+                    self.draw_circle_t(win,  35*TARGET_x_3, 35*TARGET_y_3, DIAMETER_T, 0, BLACK_2) #3
+                    self.draw_circle_t(win,  35*TARGET_x_4, 35*TARGET_y_4, DIAMETER_T, 0, BLACK_2) #4
+                    self.draw_circle_t(win,  35*TARGET_x_5, 35*TARGET_y_5, DIAMETER_T, 0, WHITE) #5
+                    self.draw_circle_t(win, 35*TARGET_x_6, 35*TARGET_y_6, DIAMETER_T, 0, BLACK_2) #6
+                
+                if self.sequence[self.trial] == 6:
+                    self.draw_circle_t(win, 35*TARGET_x_1, 35*TARGET_y_1, DIAMETER_T, 0, BLACK_2) #1
+                    self.draw_circle_t(win, 35*TARGET_x_2, 35*TARGET_y_2, DIAMETER_T, 0, BLACK_2) #2
+                    self.draw_circle_t(win,  35*TARGET_x_3, 35*TARGET_y_3, DIAMETER_T, 0, BLACK_2) #3
+                    self.draw_circle_t(win,  35*TARGET_x_4, 35*TARGET_y_4, DIAMETER_T, 0, BLACK_2) #4
+                    self.draw_circle_t(win,  35*TARGET_x_5, 35*TARGET_y_5, DIAMETER_T, 0, BLACK_2) #5
+                    self.draw_circle_t(win, 35*TARGET_x_6, 35*TARGET_y_6, DIAMETER_T, 0, WHITE) #6
                 
                 #Get time of response 
                 self.execution_time.append(pygame.time.get_ticks())  
@@ -365,32 +404,27 @@ class Background:
                 angle = math.degrees(tan)
                 
                 self.mouse_position_dist.append([x_dist,y_dist]) 
-                print(self.mouse_position_dist[-1],self.mouse_position[-1],self.sequence[self.trial] )                  
+                              
                 
                 #self.mouse_position.append(pygame.mouse.get_pos())
                 self.draw_mouse(win, RED, self.mouse_position_dist)
                 #self.draw_mouse(win, WHITE, self.mouse_position)
                       
                 
-            if self.cont > WARNING+EXECUTION+self.random and self.cont < WARNING+EXECUTION+self.random+TIME_IMG:
+            if self.cont > WARNING+EXECUTION+self.random and self.cont < WARNING+EXECUTION+self.random+TIME_FEEDBACK:
                 win.fill(BLACK)
-                self.img (win,  WIDTH//2*.60, HEIGHT//2- DIAMETER_H*2, DIAMETER_H*2, "img/trial_"+str(self.trial+1)+"/1show.png")
-                self.img (win,  WIDTH//2*.80, HEIGHT//2- DIAMETER_H*2, DIAMETER_H*2, "img/trial_"+str(self.trial+1)+"/2show.png")
-                self.img (win,  WIDTH//2*1, HEIGHT//2- DIAMETER_H*2, DIAMETER_H*2, "img/trial_"+str(self.trial+1)+"/3show.png")
-                self.img (win,  WIDTH//2*1.2, HEIGHT//2- DIAMETER_H*2, DIAMETER_H*2, "img/trial_"+str(self.trial+1)+"/4show.png")
-                self.img (win,  WIDTH//2*1.4, HEIGHT//2- DIAMETER_H*2, DIAMETER_H*2, "img/trial_"+str(self.trial+1)+"/5show.png")
-                self.img (win,  WIDTH//2*1.6, HEIGHT//2- DIAMETER_H*2, DIAMETER_H*2, "img/trial_"+str(self.trial+1)+"/6show.png")
+                self.draw_circle_t(win, self.pos_target_x, self.pos_target_y, DIAMETER_T, 0, WHITE)
+                self.draw_circle_t(win, self.mouse_position_dist[-1][0], self.mouse_position_dist[-1][1], DIAMETER_T//4, 0, RED)
+            
+            if self.cont > WARNING+EXECUTION+self.random+TIME_FEEDBACK and self.cont < WARNING+EXECUTION+self.random+TIME_FEEDBACK+TIME_IMG:
+                 win.fill(BLACK)
+                 self.text_write (win, "Palavra ?", WIDTH//2*.95,  HEIGHT//2*.50)
+               
                 
-                self.text_write (win, "1", WIDTH//2*.60,  HEIGHT//2- DIAMETER_H*3.5)
-                self.text_write (win, "2", WIDTH//2*.80,  HEIGHT//2- DIAMETER_H*3.5)
-                self.text_write (win, "3", WIDTH//2*1,  HEIGHT//2- DIAMETER_H*3.5)
-                self.text_write (win, "4", WIDTH//2*1.2,  HEIGHT//2- DIAMETER_H*3.5)
-                self.text_write (win, "5", WIDTH//2*1.4,  HEIGHT//2- DIAMETER_H*3.5)
-                self.text_write (win, "6", WIDTH//2*1.6,  HEIGHT//2- DIAMETER_H*3.5)
                 
                 
             # Set all ans Save
-            if self.cont > WARNING+EXECUTION+self.random+TIME_IMG:
+            if self.cont > WARNING+EXECUTION+self.random+TIME_FEEDBACK+TIME_IMG:
                 
                 self.trial +=1
                 
