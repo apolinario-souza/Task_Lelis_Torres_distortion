@@ -158,7 +158,7 @@ class Background:
             pygame.draw.circle(win, color, (pos[0],pos[1]), DIAMETER_T//4, 0)
         
     def text_write (self, win, text, width, height):
-        base_font = pygame.font.Font(None, 32)
+        base_font = pygame.font.Font(None, 50)
         text_surface = base_font.render(text, True, (255,255,255))
         win.blit(text_surface, (width, height))     
         
@@ -418,7 +418,7 @@ class Background:
             
             if self.cont > WARNING+EXECUTION+self.random+TIME_FEEDBACK and self.cont < WARNING+EXECUTION+self.random+TIME_FEEDBACK+TIME_IMG:
                  win.fill(BLACK)
-                 self.text_write (win, "Palavra ?", WIDTH//2*.95,  HEIGHT//2*.50)
+                 self.text_write (win, "Qual a letra você viu?", WIDTH//2*.70,  HEIGHT//2*.50)
                
                 
                 
